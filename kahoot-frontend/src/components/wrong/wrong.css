@@ -1,0 +1,66 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+.section {
+  background-color: #ff3355;
+  align-items: center;
+  font-family: "Montserrat", sans-serif;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+}
+.correct,
+.tick,
+.streak,
+.points {
+  margin-bottom: 2px;
+}
+
+.correct {
+  font-size: 28px;
+}
+
+.correct,
+.streak {
+  color: #fff;
+  font-weight: bold;
+}
+.streak {
+  display: flex;
+  font-size: 24px;
+}
+
+.streak img {
+  margin-left: 10px;
+  width: 20px;
+  height: 20px;
+}
+.wrong {
+  font-size: 30px;
+  color: #ff3355;
+  background-color: #fff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrong img {
+  width: 100%;
+  height: auto;
+}
+.points {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 80px; /* Increase left padding */
+  padding-right: 80px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 25px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  background-color: rgba(0, 0, 0, 0.5);
+}

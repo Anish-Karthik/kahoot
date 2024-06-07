@@ -1,0 +1,199 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Indie+Flower&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+.home {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  background-image: url('/lobby/lobby2.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 2rem 9%;
+  background-color: #3a1374;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+
+.lobby-container {
+  margin-top: 150px;
+  padding: 10px;
+  background-color: transparent;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.number {
+  position: absolute;
+  top: 35px;
+  left: 10px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+}
+
+.Kahoot {
+  flex: 1;
+  margin-left: 135px;
+  text-align: center;
+  font-family: "Indie Flower", cursive;
+  color: #fff;
+}
+
+.Kahoot img {
+  width: 150px;
+  height: 50px;
+}
+
+.rightside {
+  display: flex;
+  align-items: center;
+}
+
+.rightside i {
+  margin-right: 10px;
+}
+
+.lock {
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 10px;
+  height: 20px;
+  text-align: center;
+  margin-right: 5px;
+  align-items: center;
+}
+
+.start {
+  margin-right: 20px;
+  background-color: #fff;
+  color: #050505;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.text {
+  background-color: #fff;
+  padding: 20px 50px;
+  border-radius: 2px;
+  margin-left: 410px;
+}
+
+.text h3 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+  font-family: "Montserrat", sans-serif;
+}
+
+.icon {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: 15px;
+  height: 15px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 30;
+}
+
+.top-left-icon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+}
+
+.top-left-icon i {
+  color: #050505;
+  font-size: 24px;
+}
+/* 
+.players {
+  padding: 15px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 25px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.playersss {
+  margin-top: 55px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.player {
+  text-align: center;
+  padding-right: 30px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.player p {
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 25px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.player img {
+  width: 100px;
+  height: 100px;
+  border: 5px solid black;
+  border-radius: 50%;
+} */
