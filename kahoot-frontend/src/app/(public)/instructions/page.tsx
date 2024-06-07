@@ -51,7 +51,7 @@ const ChatRoom: React.FC = () => {
       console.log("Connecting to chat room...");
       if (username.trim() && gameCode) {
         toast.loading("Connecting to room...");
-        const socket = new SockJS("http://localhost:8080/ws");
+        const socket = new SockJS(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"}/ws`);
         const client = Stomp.over(socket);
         client.connect(
           {},

@@ -17,7 +17,7 @@ export default function ChatRoom({ roomNumber }: { roomNumber: string }) {
   const [connected, setConnected] = useState(false);
   useEffect(() => {
     // Establish the WebSocket connection
-    const socket = new SockJS("http://localhost:8080/ws");
+    const socket = new SockJS(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"}/ws`);
     const client = Stomp.over(socket);
     setStompClient(client);
     client.connect(
