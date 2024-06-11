@@ -11,7 +11,7 @@ const Correct = ({
   answerStreak: boolean;
 }) => {
   return (
-    <section className="section fixed z-50 inset-0">
+    <section className="section fixed z-50 inset-0 !bg-[#66bf39]">
       <div className="correct !mb-6 ">
         <h2 className="!text-4xl">Correct!</h2>
       </div>

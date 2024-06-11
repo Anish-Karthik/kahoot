@@ -3,7 +3,7 @@ import "./wrong.css";
 import { FaTimes } from "react-icons/fa";
 const Wrong = ({ isAnswered }: { isAnswered: boolean }) => {
   return (
-    <section className="section fixed z-50 inset-0">
+    <section className="section fixed z-50 inset-0 !bg-[#ff3355]">
       <div className="correct !mb-6 ">
         <h2 className="!text-4xl">{isAnswered ? "Wrong!" : "Time's Up!"}</h2>
       </div>

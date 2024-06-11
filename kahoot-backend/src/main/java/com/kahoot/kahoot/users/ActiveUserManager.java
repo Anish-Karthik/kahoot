@@ -34,6 +34,22 @@ public class ActiveUserManager {
         users.put(user.getUsername(), user);
     }
 
+    public boolean isAlreadyAnswered(String room, String username, int questionIndex) {
+        Map<String, LiveUser> users = activeUsers.get(room);
+        LiveUser user = users.get(username);
+        if (user == null) {
+            return false;
+        }
+        if (user.getAnswers() == null) {
+            return false;
+        }
+        for (Answer answer : user.getAnswers()) {
+            if (answer.getQuestionIndex() == questionIndex) {
+                return true;
+            }
+        }
+        return false;
+    }
     public void addAnswer(String room, String username, Answer answer) {
         Map<String, LiveUser> users = activeUsers.get(room);
         LiveUser user = users.get(username);
@@ -42,6 +58,12 @@ public class ActiveUserManager {
         }
         if (user.getAnswers() == null) {
             user.setAnswers(new ArrayList<>());
+        }
+        // check if answer for given question already exists
+        for (Answer existingAnswer : user.getAnswers()) {
+            if (existingAnswer.getQuestionIndex() == answer.getQuestionIndex()) {
+                return;
+            }
         }
         user.getAnswers().add(answer);
     }

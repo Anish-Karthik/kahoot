@@ -192,7 +192,12 @@ public class ChatController {
         // answer.setAnsweredInSeconds(answeredInSeconds);
         // answer.setCorrect(chatMessage.getVerdict().equals(Verdict.CORRECT));
         // answer.set
-
+        // check if already answered
+        if (activeUserManager.isAlreadyAnswered(roomNumber, chatMessage.getSender().getUsername(), chatMessage.getQuestionIndex())) {
+            chatMessage.setType(MessageType.ERROR);
+            chatMessage.setContent("Already answered");
+            return chatMessage;
+        }
 
         Answer res = activeUserManager.answerManager.validateAnswer(chatMessage.getAnswerIndex(), chatMessage.getSender().getUsername());
         chatMessage.setVerdict(Verdict.builder().correct(res.isCorrect()).correctAnswerIndex(res.getAnswerIndex()).score(res.getScore()).build());

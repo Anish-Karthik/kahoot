@@ -92,9 +92,9 @@ const ChatRoom: React.FC = () => {
                     console.log(msg);
                     console.log();
                     setContentType(ContentType.QUESTION);
-                    setTimeout(() => {
-                      console.log("Submit answer", -1); // DEBUG
-                      if (contentType === "QUESTION") {
+                    const timeoutObj = setTimeout(() => {
+                      console.log("Submit answer", -1, contentType); // DEBUG
+                      // if (contentType === "QUESTION") {
                         console.log("Submit answer", -1);
                         const answer: Partial<AdvancedChatMessage> = {
                           type: MessageType.ANSWER,
@@ -104,13 +104,14 @@ const ChatRoom: React.FC = () => {
                           },
                           answerIndex: -1,
                           receiver: Receiver.PLAYER,
+                          questionIndex: msg.questionIndex,
                         };
                         client?.send(
                           `/app/chat/${gameCode}/answer`,
                           {},
                           JSON.stringify(answer)
                         );
-                      }
+                      // }
                     }, (msg.question!.timeLimit / 4) * 1000);
                     setContent(
                       <div className="w-full h-full">
@@ -120,6 +121,7 @@ const ChatRoom: React.FC = () => {
                         <QuestionOptions
                           slide={convertQuestionToSlide(msg.question!)}
                           submitAnswer={(ind: number) => {
+                            clearTimeout(timeoutObj);
                             console.log("Submit answer", ind);
                             const answer: Partial<AdvancedChatMessage> = {
                               type: MessageType.ANSWER,
@@ -129,6 +131,7 @@ const ChatRoom: React.FC = () => {
                               },
                               answerIndex: ind,
                               receiver: Receiver.PLAYER,
+                              questionIndex: msg.questionIndex,
                             };
                             console.log(client);
                             client?.send(
