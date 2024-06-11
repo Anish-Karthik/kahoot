@@ -231,6 +231,9 @@ public class ChatController {
         }
 
         Answer res = activeUserManager.answerManager.validateAnswer(chatMessage.getAnswerIndex(), chatMessage.getSender().getUsername());
+        System.out.println("Answer validated");
+        System.out.println(res);
+        System.out.println("++=======================+++++++");
         chatMessage.setVerdict(Verdict.builder().correct(res.isCorrect()).correctAnswerIndex(res.getAnswerIndex()).score(res.getScore()).build());
         activeUserManager.addAnswer(roomNumber, chatMessage.getSender().getUsername(), res);
         return chatMessage;

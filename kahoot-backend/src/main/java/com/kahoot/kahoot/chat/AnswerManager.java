@@ -27,9 +27,16 @@ public class AnswerManager {
       return new Answer(-1, false, currentQuestionIndex, answeredInSeconds, username, 0);
     }
     boolean correct = currentQuestion.getCorrectAnswerIndices().contains(answerIndex);
-    double timeTaken = answeredInSeconds * 10.5;
-    int maxScore = 1000;
-    int score = (int) (maxScore - timeTaken);
+//    Divide response time by the question timer. For example, a player responded 2 seconds after a 30-second question timer started. 2 divided by 30 is 0.0667.
+////            Divide that value by 2. For example, 0.0667 divided by 2 is 0.0333.
+////            Subtract that value from 1. For example, 1 minus 0.0333 is 0.9667.
+////            Multiply points possible by that value. For example, 1000 points possible multiplied by 0.9667 is 966.7.
+////            Round to the nearest whole number. For example, 966.7 is 967 points.
+
+    int score = (int) Math.round((1 - (answeredInSeconds / currentQuestion.getTimeLimit()) / 2) * 1000);
+    if (!correct) {
+      score = 0;
+    }
     return new Answer(answerIndex, correct, currentQuestionIndex, answeredInSeconds, username, score);
   }
 
