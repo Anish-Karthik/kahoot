@@ -84,6 +84,10 @@ public class ActiveUserManager {
         System.out.println(activeUsers);
     }
 
+    public void removeAllUsers(String room) {
+        activeUsers.remove(room);
+    }
+
     public List<LiveUser> getUsers(String room) {
         return new ArrayList<>(activeUsers.getOrDefault(room, new ConcurrentHashMap<>()).values());
     }

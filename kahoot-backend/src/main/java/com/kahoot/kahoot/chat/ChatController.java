@@ -107,6 +107,8 @@ public class ChatController {
     public ChatMessage endQuiz(
             @DestinationVariable String roomNumber,
             @Payload ChatMessage chatMessage) {
+//        remove all users from the room
+        activeUserManager.removeAllUsers(roomNumber);
         chatMessage.setType(MessageType.END);
         chatMessage.setReciever(Receiver.ALL);
         chatMessage.setContent("Quiz has ended");
@@ -194,6 +196,9 @@ public class ChatController {
         // answer.set
         // check if already answered
         if (activeUserManager.isAlreadyAnswered(roomNumber, chatMessage.getSender().getUsername(), chatMessage.getQuestionIndex())) {
+            System.out.println("------------------\nAlready answered\n----------------");
+            System.out.println(chatMessage.getSender().getUsername() + " already answered");
+            System.out.println(chatMessage);
             chatMessage.setType(MessageType.ERROR);
             chatMessage.setContent("Already answered");
             return chatMessage;

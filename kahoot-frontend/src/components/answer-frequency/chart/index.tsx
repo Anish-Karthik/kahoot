@@ -31,7 +31,7 @@ const AnswerFrequencyChart = ({
                 `${COLORS[currInd]}`
               )}
             >
-              <Shape size={30} className="text-white" fill="white" />{questionType}
+              <Shape size={30} className="text-white" fill="white" />
             </div>
             <div
               className={cn(

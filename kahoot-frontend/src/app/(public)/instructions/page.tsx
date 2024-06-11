@@ -8,7 +8,13 @@ import { getRandomImage, images } from "@/lib/images";
 import toast from "react-hot-toast";
 import { Edit } from "lucide-react";
 import { ImageForm } from "../_components/image-form";
-import { AdvancedChatMessage, MessageType, Question, Receiver } from "@/types";
+import {
+  AdvancedChatMessage,
+  MessageType,
+  Question,
+  QuestionType,
+  Receiver,
+} from "@/types";
 import { Circle, Triangle, Square, Diamond } from "lucide-react";
 import { Slide } from "@/app/(protected)/questionset/create/_components/slides.hook";
 import { OptionBar } from "@/app/(protected)/questionset/create/_components/Slide";
@@ -16,6 +22,7 @@ import { cn, convertQuestionToSlide } from "@/lib/utils";
 import Correct from "@/components/correct";
 import Wrong from "@/components/wrong";
 import { QuestionOptions } from "@/components/QuestionOptions";
+import ReactCountDown from "@/app/(protected)/quiz/_components/ReactCountDown";
 const SHAPES = [Triangle, Diamond, Circle, Square];
 const COLORS = ["bg-red-600", "bg-blue-600", "bg-yellow-600", "bg-green-600"];
 enum ContentType {
@@ -95,31 +102,36 @@ const ChatRoom: React.FC = () => {
                     const timeoutObj = setTimeout(() => {
                       console.log("Submit answer", -1, contentType); // DEBUG
                       // if (contentType === "QUESTION") {
-                        console.log("Submit answer", -1);
-                        const answer: Partial<AdvancedChatMessage> = {
-                          type: MessageType.ANSWER,
-                          sender: {
-                            username: username,
-                            imageUrl: imageUrl,
-                          },
-                          answerIndex: -1,
-                          receiver: Receiver.PLAYER,
-                          questionIndex: msg.questionIndex,
-                        };
-                        client?.send(
-                          `/app/chat/${gameCode}/answer`,
-                          {},
-                          JSON.stringify(answer)
-                        );
+                      console.log("Submit answer", -1);
+                      const answer: Partial<AdvancedChatMessage> = {
+                        type: MessageType.ANSWER,
+                        sender: {
+                          username: username,
+                          imageUrl: imageUrl,
+                        },
+                        answerIndex: -1,
+                        receiver: Receiver.PLAYER,
+                        questionIndex: msg.questionIndex,
+                      };
+                      client?.send(
+                        `/app/chat/${gameCode}/answer`,
+                        {},
+                        JSON.stringify(answer)
+                      );
                       // }
                     }, (msg.question!.timeLimit / 4) * 1000);
                     setContent(
-                      <div className="w-full h-full">
-                        <div className="w-full text-center py-4 mb-4 text-2xl text-white">
+                      <div className="w-screen h-screen">
+                        {/* <div className="w-full text-center py-4 mb-4 text-2xl text-white">
                           Question No: {msg.questionIndex! + 1}
-                        </div>
+                        </div> */}
                         <QuestionOptions
                           slide={convertQuestionToSlide(msg.question!)}
+                          innerClassName={
+                            msg.question!.questionType === QuestionType.QUIZ
+                              ? "!h-[45vh]"
+                              : "!h-[90vh]"
+                          }
                           submitAnswer={(ind: number) => {
                             clearTimeout(timeoutObj);
                             console.log("Submit answer", ind);
@@ -145,9 +157,27 @@ const ChatRoom: React.FC = () => {
                     );
                     break;
                   case MessageType.START:
+                    setContentType(ContentType.CONTENT);
+                    setContent(
+                      <ReactCountDown
+                        className="fixed inset-0 z-50"
+                        setLoading={(val: boolean) => {
+                          setContent(
+                            <h1 className="text-white text-4xl sm:text-5xl md:text-7xl font-extrabold">
+                              Get ready!
+                            </h1>
+                          );
+                        }}
+                      />
+                    ); // DEBUG
+                    break;
                   case MessageType.GET_READY:
                     setContentType(ContentType.CONTENT);
-                    setContent(<h1>Get ready!</h1>);
+                    setContent(
+                      <h1 className="text-white text-4xl sm:text-5xl md:text-7xl font-extrabold">
+                        Get ready!
+                      </h1>
+                    );
                     break;
                   case MessageType.NEXT:
                     break;

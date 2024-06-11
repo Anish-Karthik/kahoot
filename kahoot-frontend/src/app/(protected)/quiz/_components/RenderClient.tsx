@@ -19,10 +19,13 @@ import {
   Slide,
   useSlides,
 } from "../../questionset/create/_components/slides.hook";
-import { convertSlideToQuestion } from "@/lib/utils";
+import { cn, convertSlideToQuestion } from "@/lib/utils";
 import SimpleCounter from "./SimpleCounter";
 import Scoreboard from "@/components/scoreboard";
 import AnswerFrequencyPage from "@/components/answer-frequency/page";
+import { QuestionOptionsFrequency } from "@/components/QuestionOptions";
+import DisplaySlide from "@/components/DisplaySlide";
+import QuestionLoader from "@/components/QuestionLoader";
 
 // RenderClient
 // 1. timer -> 3 seconds delay and auto to next question to all clients in quiz
@@ -262,14 +265,32 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
     return (
       <div className="w-full h-full relative">
         <div className="fixed top-2 right-2 flex w-full justify-end gap-3">
-          <Button
-            onClick={() => {
-              setShowScoreBoard(false);
-              renderQuestionClientOnly(currQuestion + 1);
-            }}
-          >
-            Next
-          </Button>
+          {currQuestion + 1 === questions.length ? (
+            <Button
+              onClick={() => {
+                stompClient?.send(
+                  `/app/chat/${gameCode}/end`,
+                  {},
+                  JSON.stringify({ type: MessageType.END })
+                );
+                stompClient?.disconnect(() => {
+                  console.log("Disconnected");
+                });
+                router.push("/");
+              }}
+            >
+              End Quiz
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                setShowScoreBoard(false);
+                renderQuestionClientOnly(currQuestion + 1);
+              }}
+            >
+              Next
+            </Button>
+          )}
         </div>
         <Scoreboard leaderboardData={scoreboard} />
       </div>
@@ -278,13 +299,38 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
 
   // QUESTION with options
   if (showOptions) {
+    if (slidesState.currentSlide.image) {
+      return (
+        <div className="w-full h-full flex items-center justify-center">
+          <div className="fixed flex justify-between inset-x-0 top-0 text-xl p-3">
+            <h1 className="">Question {currQuestion + 1}</h1>
+            <div className="flex items-center gap-3">
+              <h1>
+                Time:{" "}
+                <SimpleCounter
+                  onSuccess={() => {
+                    renderAnswerFrequency();
+                  }}
+                  timer={questions[currQuestion].timeLimit / 4}
+                />
+                s
+              </h1>
+              <h1>
+                {currQuestion + 1}/{questions.length}
+              </h1>
+            </div>
+          </div>
+          <DisplaySlide slide={slidesState.currentSlide} />
+        </div>
+      );
+    }
     return (
       <div className="w-full h-full flex items-center justify-center">
-        <div className="flex flex-col gap-3">
-          <div className="flex justify-between">
-            <h1>Question {currQuestion + 1}</h1>
+        <div className="fixed flex justify-between inset-x-0 top-0 text-xl p-3">
+          <h1 className="">Question {currQuestion + 1}</h1>
+          <div className="flex items-center gap-3">
             <h1>
-              Time Left:{" "}
+              Time:{" "}
               <SimpleCounter
                 onSuccess={() => {
                   renderAnswerFrequency();
@@ -293,14 +339,32 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
               />
               s
             </h1>
+            <h1>
+              {currQuestion + 1}/{questions.length}
+            </h1>
           </div>
+        </div>
+        <div className="flex flex-col gap-3 w-full h-full justify-evenly p-2">
           {/* <ProgressBar time={slidesState.currentSlide.timeLimit} /> */}
-          <h1>{slidesState.currentSlide.question}</h1>
-          <div className="flex flex-col gap-3">
-            {slidesState.currentSlide.answers.map((option, index) => (
-              <Button key={index}>{option.answer}</Button>
-            ))}
-          </div>
+          <h1 className="text-white text-4xl sm:text-5xl md:text-7xl font-extrabold">
+            {slidesState.currentSlide.question}
+          </h1>
+          {slidesState.currentSlide.image && (
+            <div className="cursor-default md:h-72">
+              <img src={slidesState.currentSlide.image} alt="Question" />
+            </div>
+          )}
+          <QuestionOptionsFrequency
+            slide={slidesState.currentSlide}
+            questionType={slidesState.currentSlide.questionType}
+            innerClassName={cn(
+              "cursor-default !hover:opacity-100",
+              slidesState.currentSlide.questionType === "QUIZ"
+                ? "md:!h-48"
+                : "md:!h-64 text-2xl font-bold"
+            )}
+            size={50}
+          />
         </div>
       </div>
     );
@@ -311,8 +375,11 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
     console.log(slidesState.currentSlide);
     return (
       <div className="w-full h-full flex items-center justify-center">
-        <div className="flex flex-col gap-3">
-          <h1>Question {currQuestion + 1}</h1>
+        <QuestionLoader timeLimit={5} className="fixed -inset-1 z-50" />
+        <div className="fixed flex inset-x-0 top-5 text-2xl">
+          <h1 className="">Question {currQuestion + 1}</h1>
+        </div>
+        <div className="flex flex-col gap-3 text-white text-4xl sm:text-5xl md:text-7xl font-extrabold">
           <h1>{slidesState.currentSlide.question}</h1>
           {/* <ProgressBar time={5} /> */}
         </div>
