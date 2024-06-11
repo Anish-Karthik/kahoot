@@ -21,4 +21,5 @@ public class AdvancedChatMessage extends ChatMessage {
   private int answerIndex;
   private Verdict verdict;
   private int questionIndex;
+  private int totalUsers;
 }

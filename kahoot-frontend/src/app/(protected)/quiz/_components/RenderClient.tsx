@@ -22,6 +22,7 @@ import {
 import { convertSlideToQuestion } from "@/lib/utils";
 import SimpleCounter from "./SimpleCounter";
 import Scoreboard from "@/components/scoreboard";
+import AnswerFrequencyPage from "@/components/answer-frequency/page";
 
 // RenderClient
 // 1. timer -> 3 seconds delay and auto to next question to all clients in quiz
@@ -46,6 +47,7 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
   const [answerFrequency, setAnswerFrequency] = useState<number[]>([]);
   const [showScoreBoard, setShowScoreBoard] = useState(false);
   const [scoreboard, setScoreboard] = useState<Leaderboard[]>([]);
+  const [totalActiveUsers, setTotalActiveUsers] = useState(0);
   const slidesState = useSlides();
   useEffect(() => {
     slidesState.setSlides(questions);
@@ -89,7 +91,7 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
   const disconnect = () => {
     if (stompClient && connected) {
       stompClient.disconnect(() => {
-        toast.success("Disconnected successfully");
+        // toast.success("Disconnected successfully");
         console.log("Disconnected");
         // setConnected(false);
       });
@@ -103,7 +105,7 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
   const activeUserEvents = (message: Stomp.Message) => {};
   const quizEvents = (message: Stomp.Message) => {
     const msg: AdvancedChatMessage = JSON.parse(message.body);
-    toast.success("Message received");
+    // toast.success("Message received");
     console.log(msg);
     const reciever = msg.receiver;
     if (reciever === Receiver.PLAYER) {
@@ -121,6 +123,7 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
         console.log(msg);
         setShowAnswerFrequency(true);
         setAnswerFrequency(msg?.answerFrequency || []);
+        setTotalActiveUsers(msg?.totalUsers || 0);
         break;
       case MessageType.LEADERBOARD:
         console.log(msg);
@@ -217,9 +220,9 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
     console.log(currQuestion);
     console.log(answerFrequency);
     console.log(slidesState.currentSlide);
-    const currentQuestion = slidesState.currentSlide;
+    const currentQuestionSlide = slidesState.currentSlide;
 
-    if (currentQuestion === undefined) {
+    if (currentQuestionSlide === undefined) {
       return (
         <div className="w-full h-full flex items-center justify-center">
           Loading...
@@ -227,33 +230,30 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
       );
     }
 
-    const question = convertSlideToQuestion(currentQuestion);
+    const question = convertSlideToQuestion(currentQuestionSlide);
     console.log(question);
     if (question.questionType === QuestionType.TRUE_OR_FALSE) {
       answerFrequency.length = 2;
     }
     return (
-      <div className="w-full h-full flex items-center justify-center">
-        <div className="flex flex-col gap-3">
-          <h1>Answer Frequency</h1>
-          <div className="flex flex-col gap-3">
-            {Object.entries(answerFrequency).map(([key, value]) => (
-              <div key={key} className="flex justify-between">
-                <h1>Option {key}</h1>
-                <h1>{value}</h1>
-              </div>
-            ))}
-          </div>
+      <div className="w-full h-full relative">
+        <div className="fixed top-2 right-2 flex w-full justify-end gap-3">
           <Button
             onClick={() => {
-              console.log("hi");
-              toast.success("hiu");
               renderLeaderboard();
             }}
           >
             Next
           </Button>
         </div>
+        <AnswerFrequencyPage
+          slide={currentQuestionSlide}
+          answers={answerFrequency}
+          total={totalActiveUsers}
+          correctIndices={question.correctAnswerIndices}
+          questionType={question.questionType}
+          key={question.id}
+        />
       </div>
     );
   }

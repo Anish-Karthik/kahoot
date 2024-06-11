@@ -24,12 +24,15 @@ export type Answer = {
   imageUrl?: string;
 };
 
-export type Slide = SlideSettings & {
+export type BaseSlide = {
   id?: number;
   question: string;
   image?: string;
   answers: Answer[];
 };
+
+export type Slide = SlideSettings & BaseSlide;
+
 export type CurrentSlideSettingActions = {
   setQuestionType: (questionType: SlideSettings["questionType"]) => void;
   setPoints: (points: SlideSettings["points"]) => void;

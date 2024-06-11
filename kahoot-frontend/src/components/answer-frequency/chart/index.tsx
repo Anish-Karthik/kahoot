@@ -4,22 +4,22 @@ import { Check } from "lucide-react";
 import React from "react";
 import { FaCheck } from "react-icons/fa";
 
-const AnswerFrequency = ({
+const AnswerFrequencyChart = ({
   questionType = "QUIZ",
   answers = [2, 1, 0, 0],
   total = 10,
-  correctIndex = 0,
+  correctIndices = [0],
 }: {
   questionType?: Slide["questionType"];
   answers?: number[];
   total?: number;
-  correctIndex?: number;
+  correctIndices?: number[];
 }) => {
   return (
-    <div className="max-w-3xl mx-auto h-56 flex gap-2 w-full">
+    <div className={cn("max-w-3xl mx-auto h-64 flex w-full", questionType === "QUIZ" ? "gap-2": "gap-2 sm:gap-6")}>
       {answers.map((answer, ind) => {
-        const Shape = SHAPES[questionType === "QUIZ" ? ind : (ind + 1) % 2];
-        const color = COLORS[questionType === "QUIZ" ? ind : (ind + 1) % 2];
+        const currInd = questionType === "QUIZ" ? ind : ind;
+        const Shape = SHAPES[currInd];
         return (
           <section
             key={`ANSWERS-${ind}`}
@@ -27,16 +27,16 @@ const AnswerFrequency = ({
           >
             <div
               className={cn(
-                `flex gap-2 bg-white p-2 h-10 w-full items-center justify-center hover:opacity-85 mt-1`,
-                `${COLORS[questionType === "QUIZ" ? ind : (ind + 1) % 2]}`
+                `flex gap-2 bg-white p-2 h-10 w-full items-center rounded-sm justify-center hover:opacity-85 mt-1`,
+                `${COLORS[currInd]}`
               )}
             >
-              <Shape size={30} className="text-white" fill="white" />
+              <Shape size={30} className="text-white" fill="white" />{questionType}
             </div>
             <div
               className={cn(
-                `flex gap-2 bg-white p-2 w-full items-center justify-center hover:opacity-85`,
-                `${COLORS[questionType === "QUIZ" ? ind : (ind + 1) % 2]}`
+                `flex gap-2 bg-white p-2 w-full items-center rounded-sm justify-center hover:opacity-85`,
+                `${COLORS[currInd]}`
               )}
               style={{
                 height: `${(answer / total) * 100}%`,
@@ -44,13 +44,13 @@ const AnswerFrequency = ({
             />
             <div
               className={cn(
-                `flex gap-2 bg-white p-2 h-10 w-full items-center justify-center hover:opacity-85`,
+                `flex gap-2 bg-transparent p-2 h-10 w-full items-center justify-center hover:opacity-85`,
                 `${
-                  TEXT_COLORS[questionType === "QUIZ" ? ind : (ind + 1) % 2]
+                  TEXT_COLORS[currInd]
                 } font-extrabold text-2xl`
               )}
             >
-              {correctIndex === ind && <FaCheck size={25} />} {answer}
+              {(correctIndices.includes(ind)) && <FaCheck size={25} />} {answer}
             </div>
           </section>
         );
@@ -59,4 +59,4 @@ const AnswerFrequency = ({
   );
 };
 
-export default AnswerFrequency;
+export default AnswerFrequencyChart;

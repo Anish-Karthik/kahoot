@@ -81,6 +81,10 @@ public class ActiveUserManager {
         return answerFrequency;
     }
 
+    public int getTotalNumberOfActiveUsers(String room) {
+        return activeUsers.getOrDefault(room, new ConcurrentHashMap<>()).size();
+    }
+
     public List<Leaderboard> getLeaderboard(String room) {
         List<Leaderboard> leaderboards = new ArrayList<>();
         Map<String, LiveUser> users = activeUsers.get(room);

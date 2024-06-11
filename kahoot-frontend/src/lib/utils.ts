@@ -58,12 +58,23 @@ export const generateRandomCode = (size: number): string => {
   return code;
 };
 
-import {
-  Circle,
-  Triangle,
-  Square,
-  Diamond,
-} from "lucide-react";
+import { Circle, Triangle, Square, Diamond } from "lucide-react";
 export const SHAPES = [Triangle, Diamond, Circle, Square];
-export const COLORS = ["bg-red-600", "bg-blue-600", "bg-yellow-600", "bg-green-600"];
-export const TEXT_COLORS = ["text-red-600", "text-blue-600", "text-yellow-600", "text-green-600"];
+export const COLORS = [
+  "bg-red-600",
+  "bg-blue-600",
+  "bg-yellow-600",
+  "bg-green-600",
+];
+export const TEXT_COLORS = [
+  "text-red-600",
+  "text-blue-600",
+  "text-yellow-600",
+  "text-green-600",
+];
+export const DARK_COLORS = [
+  "text-red-900",
+  "text-blue-900",
+  "text-yellow-900",
+  "text-green-900",
+];

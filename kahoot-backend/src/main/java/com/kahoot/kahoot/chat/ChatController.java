@@ -162,6 +162,7 @@ public class ChatController {
         System.out.println("Sending answer frequency");
         chatMessage.setType(MessageType.ANSWER_FREQUENCY);
         chatMessage.setReciever(Receiver.HOST);
+        chatMessage.setTotalUsers(activeUserManager.getTotalNumberOfActiveUsers(roomNumber));
         chatMessage.setAnswerFrequency(activeUserManager.getAnswerFrequency(roomNumber, chatMessage.getQuestionIndex()));
         return chatMessage;
     }

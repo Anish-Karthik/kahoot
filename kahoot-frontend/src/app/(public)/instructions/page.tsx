@@ -9,17 +9,13 @@ import toast from "react-hot-toast";
 import { Edit } from "lucide-react";
 import { ImageForm } from "../_components/image-form";
 import { AdvancedChatMessage, MessageType, Question, Receiver } from "@/types";
-import {
-  Circle,
-  Triangle,
-  Square,
-  Diamond,
-} from "lucide-react";
+import { Circle, Triangle, Square, Diamond } from "lucide-react";
 import { Slide } from "@/app/(protected)/questionset/create/_components/slides.hook";
 import { OptionBar } from "@/app/(protected)/questionset/create/_components/Slide";
 import { cn, convertQuestionToSlide } from "@/lib/utils";
 import Correct from "@/components/correct";
 import Wrong from "@/components/wrong";
+import { QuestionOptions } from "@/components/QuestionOptions";
 const SHAPES = [Triangle, Diamond, Circle, Square];
 const COLORS = ["bg-red-600", "bg-blue-600", "bg-yellow-600", "bg-green-600"];
 enum ContentType {
@@ -97,6 +93,7 @@ const ChatRoom: React.FC = () => {
                     console.log();
                     setContentType(ContentType.QUESTION);
                     setTimeout(() => {
+                      console.log("Submit answer", -1); // DEBUG
                       if (contentType === "QUESTION") {
                         console.log("Submit answer", -1);
                         const answer: Partial<AdvancedChatMessage> = {
@@ -116,28 +113,32 @@ const ChatRoom: React.FC = () => {
                       }
                     }, (msg.question!.timeLimit / 4) * 1000);
                     setContent(
-                      <QuestionOptions
-                        slide={convertQuestionToSlide(msg.question!)}
-                        submitAnswer={(ind: number) => {
-                          console.log("Submit answer", ind);
-                          const answer: Partial<AdvancedChatMessage> = {
-                            type: MessageType.ANSWER,
-                            sender: {
-                              username: username,
-                              imageUrl: imageUrl,
-                            },
-                            answerIndex: ind,
-                            receiver: Receiver.PLAYER,
-                          };
-                          console.log(client);
-                          client?.send(
-                            `/app/chat/${gameCode}/answer`,
-                            {},
-                            JSON.stringify(answer)
-                          );
-                        }}
-                        questionInd={msg.questionIndex!}
-                      />
+                      <div className="w-full h-full">
+                        <div className="w-full text-center py-4 mb-4 text-2xl text-white">
+                          Question No: {msg.questionIndex! + 1}
+                        </div>
+                        <QuestionOptions
+                          slide={convertQuestionToSlide(msg.question!)}
+                          submitAnswer={(ind: number) => {
+                            console.log("Submit answer", ind);
+                            const answer: Partial<AdvancedChatMessage> = {
+                              type: MessageType.ANSWER,
+                              sender: {
+                                username: username,
+                                imageUrl: imageUrl,
+                              },
+                              answerIndex: ind,
+                              receiver: Receiver.PLAYER,
+                            };
+                            console.log(client);
+                            client?.send(
+                              `/app/chat/${gameCode}/answer`,
+                              {},
+                              JSON.stringify(answer)
+                            );
+                          }}
+                        />
+                      </div>
                     );
                     break;
                   case MessageType.START:
@@ -244,44 +245,3 @@ const ChatRoom: React.FC = () => {
   );
 };
 export default ChatRoom;
-
-function QuestionOptions({
-  submitAnswer,
-  slide,
-  questionInd = 0,
-}: {
-  submitAnswer: (ind: number) => void;
-  slide: Slide;
-  questionInd?: number;
-}) {
-  return (
-    <div className="w-full h-full">
-      <div className="w-full text-center py-4 mb-4 text-2xl text-white">
-        Question No: {questionInd + 1}
-      </div>
-      <div className="grid grid-cols-2 gap-2">
-        {slide.answers.map((answer, ind) => {
-          const Shape =
-            SHAPES[slide.questionType === "QUIZ" ? ind : (ind + 1) % 2];
-          const color =
-            COLORS[slide.questionType === "QUIZ" ? ind : (ind + 1) % 2];
-          return (
-            <button
-              key={ind}
-              onClick={() => {
-                console.log(answer);
-                submitAnswer(ind);
-              }}
-              className={cn(
-                `flex gap-2 bg-white p-2 rounded-md h-48 w-full items-center justify-center cursor-pointer hover:opacity-85`,
-                `${COLORS[slide.questionType === "QUIZ" ? ind : (ind + 1) % 2]}`
-              )}
-            >
-              <Shape size={100} className="text-white" fill="white" />
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}

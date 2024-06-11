@@ -54,6 +54,7 @@ export type AdvancedChatMessage = ChatMessage & {
   answerIndex?: number;
   verdict?: Verdict;
   questionIndex?: number;
+  totalUsers?: number;
 };
 
 // Enums defined similarly to Java enums
