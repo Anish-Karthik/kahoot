@@ -17,7 +17,7 @@ import com.kahoot.kahoot.Entity.User;
 import com.kahoot.kahoot.Repository.UserRepository;
 import com.kahoot.kahoot.Service.UserService;
 
-@CrossOrigin(origins = "http://localhost:3000" )
+//@CrossOrigin(origins = "http://localhost:3000" )
 @RestController
 @RequestMapping("/api/users")
 public class UserController {

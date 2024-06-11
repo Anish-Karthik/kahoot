@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.kahoot.kahoot.Entity.Question;
 import com.kahoot.kahoot.Service.QuestionServicess;
 
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/questions")
 public class QuestionController {

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kahoot.kahoot.Service.AnswerService;
 
-@CrossOrigin(origins = "http://localhost:3000" )
+//@CrossOrigin(origins = "http://localhost:3000" )
 @RestController
 @RequestMapping("/api/answers")
 public class AnswerController {
