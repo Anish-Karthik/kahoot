@@ -95,6 +95,7 @@ public class ChatController {
             @DestinationVariable String roomNumber,
             @Payload ChatMessage chatMessage) {
         System.out.println("Starting");
+        activeUserManager.resetAllAnswers(roomNumber);
         chatMessage.setReciever(Receiver.ALL);
         chatMessage.setType(MessageType.START);
         chatMessage.setContent("Quiz has started");
@@ -153,6 +154,31 @@ public class ChatController {
         activeUserManager.answerManager.setStartTime(new Date());
         return chatMessage;
     }
+
+    @MessageMapping("/chat/{roomNumber}/allAnswered")
+    @SendTo("/room/{roomNumber}/quiz")
+    public AdvancedChatMessage allAnswered(
+            @DestinationVariable String roomNumber,
+            @Payload AdvancedChatMessage chatMessage) throws InterruptedException {
+        TimeUnit.SECONDS.sleep(chatMessage.getDelayInSeconds());
+//     run a thread to check every second till all users have answered
+        Thread checkerThread = new Thread(new CheckerThread(activeUserManager, roomNumber, chatMessage.getQuestionIndex(), chatMessage.getQuestion().getTimeLimit()));
+        checkerThread.start();
+        try {
+            checkerThread.join();  // Wait for the thread to finish
+            chatMessage.setType(MessageType.ALL_ANSWERED);
+            chatMessage.setTotalUsers(activeUserManager.getTotalNumberOfActiveUsers(roomNumber));
+            chatMessage.setType(MessageType.ANSWER_FREQUENCY);
+            chatMessage.setReciever(Receiver.HOST);
+            chatMessage.setTotalUsers(activeUserManager.getTotalNumberOfActiveUsers(roomNumber));
+            chatMessage.setAnswerFrequency(activeUserManager.getAnswerFrequency(roomNumber, chatMessage.getQuestionIndex()));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            chatMessage.setType(MessageType.ERROR);
+        }
+        return chatMessage;
+    }
+
 
     // send answer Frequency to host
     @MessageMapping("/chat/{roomNumber}/answerFrequency")

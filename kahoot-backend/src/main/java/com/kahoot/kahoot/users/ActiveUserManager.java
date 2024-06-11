@@ -88,6 +88,29 @@ public class ActiveUserManager {
         activeUsers.remove(room);
     }
 
+    public void resetAllAnswers(String room) {
+        Map<String, LiveUser> users = activeUsers.get(room);
+        if (users == null) {
+            return;
+        }
+        for (LiveUser user : users.values()) {
+            user.setAnswers(new ArrayList<>());
+        }
+    }
+
+    public boolean hasAllAnswered(String room, int questionIndex) {
+        Map<String, LiveUser> users = activeUsers.get(room);
+        if (users == null) {
+            return false;
+        }
+        for (LiveUser user : users.values()) {
+            if (!isAlreadyAnswered(room, user.getUsername(), questionIndex)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public List<LiveUser> getUsers(String room) {
         return new ArrayList<>(activeUsers.getOrDefault(room, new ConcurrentHashMap<>()).values());
     }

@@ -19,6 +19,7 @@ export enum MessageType {
   END = "END",
   GET_READY = "GET_READY",
   ANSWER_FREQUENCY = "ANSWER_FREQUENCY",
+  ALL_ANSWERED = "ALL_ANSWERED",
 }
 
 export enum Receiver {

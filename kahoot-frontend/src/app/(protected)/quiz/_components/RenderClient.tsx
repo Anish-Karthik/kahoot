@@ -135,14 +135,30 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
         setQuestionLoader(false);
         setShowOptions(true);
         break;
+
       case MessageType.START:
         setLoading(true);
         break;
+      case MessageType.ALL_ANSWERED:
       case MessageType.ANSWER_FREQUENCY:
         console.log(msg);
+        console.log("All Answered");
+        console.log(slidesState.currentSlideIndex);
+        console.log(msg.questionIndex);
+
+        console.log(showAnswerFrequency);
+        console.log(showScoreBoard);
+        if (
+          slidesState.currentSlideIndex > msg!.questionIndex! ||
+          showAnswerFrequency ||
+          showScoreBoard
+        ) {
+          return;
+        }
         setShowAnswerFrequency(true);
         setAnswerFrequency(msg?.answerFrequency || []);
         setTotalActiveUsers(msg?.totalUsers || 0);
+        console.log("All Answered");
         break;
       case MessageType.LEADERBOARD:
         console.log(msg);
@@ -176,6 +192,15 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
       `/app/chat/${gameCode}/question`,
       {},
       JSON.stringify(currentQuestion)
+    );
+    stompClient?.send(
+      `/app/chat/${gameCode}/allAnswered`,
+      {},
+      JSON.stringify({
+        ...currentQuestion,
+        type: MessageType.ALL_ANSWERED,
+        receiver: Receiver.HOST,
+      })
     );
   };
 

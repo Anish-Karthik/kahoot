@@ -13,4 +13,5 @@ public enum MessageType {
     END, // end quiz
     ANSWER_FREQUENCY,
     GET_READY,
+    ALL_ANSWERED,
 }
