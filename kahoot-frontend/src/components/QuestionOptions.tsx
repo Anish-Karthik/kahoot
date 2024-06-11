@@ -2,7 +2,7 @@ import {
   BaseSlide,
   Slide,
 } from "@/app/(protected)/questionset/create/_components/slides.hook";
-import { cn, COLORS, DARK_COLORS, SHAPES, TEXT_COLORS } from "@/lib/utils";
+import { cn, COLORS, SHAPES } from "@/lib/utils";
 import { FaCheck } from "react-icons/fa";
 export function QuestionOptions({
   submitAnswer,

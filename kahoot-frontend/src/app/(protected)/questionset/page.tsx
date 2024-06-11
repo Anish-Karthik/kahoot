@@ -211,7 +211,7 @@ const QuestionSetCard = ({ questionSet }: { questionSet: QuestionSet }) => {
                   const res: Quiz = (await api.post(`/quiz`, quiz)).data;
                   console.log(res);
                   toast.success("Quiz created successfully");
-                  router.push(`/lobby?quizId=${res.id}&gameCode=${res.code}`);
+                  router.push(`/quiz?quizId=${res.id}&gameCode=${res.code}`);
                 } catch (error) {
                   console.log(error);
                   toast.error("Error creating quiz");

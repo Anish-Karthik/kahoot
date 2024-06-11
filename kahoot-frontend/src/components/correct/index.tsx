@@ -20,10 +20,12 @@ const Correct = ({
         <FaCheck />
       </div>
       <br />
-      {answerStreak && <div className="streak items-center !mb-3">
-        <p className="!text-xl">Answer streak</p>
-        <img src="/score/coin.png" alt="" />
-      </div>}
+      {answerStreak && (
+        <div className="streak items-center !mb-3">
+          <p className="!text-xl">Answer streak</p>
+          <img src="/score/coin.png" alt="" />
+        </div>
+      )}
       <div className="points max-w-28 rounded-md !py-6">
         <p>+{score}</p>
       </div>

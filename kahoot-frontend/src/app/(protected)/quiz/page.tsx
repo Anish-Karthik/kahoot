@@ -4,11 +4,16 @@ import React from "react";
 import RenderClient from "./_components/RenderClient";
 import { convertQuestionToSlide } from "@/lib/utils";
 import { Slide } from "../questionset/create/_components/slides.hook";
+import Lobby from "@/components/lobby/Lobby";
 
 const page = async ({
   searchParams,
 }: {
-  searchParams: { quizId: number; gameCode: string };
+  searchParams: {
+    quizId: number;
+    gameCode: string;
+    status?: "started" | "finished";
+  };
 }) => {
   const data = await api.get(`/quiz/${searchParams.quizId}`);
   console.log(data);
@@ -20,6 +25,9 @@ const page = async ({
     .flat();
   const slides: Slide[] = questions.map(convertQuestionToSlide);
   console.log(questions);
+  if (!searchParams.status) {
+    return <Lobby searchParams={searchParams} />;
+  }
   return (
     <div className="h-screen w-full !bg-[#46178F] !text-white">
       <RenderClient questions={slides} />

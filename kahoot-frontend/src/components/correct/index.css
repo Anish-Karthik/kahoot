@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 .section {
-  background-color: #66bf39 !important;
+  /* background-color: #66bf39 !important; */
   align-items: center;
   font-family: "Montserrat", sans-serif;
   flex-direction: column;

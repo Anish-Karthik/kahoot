@@ -1,30 +1,25 @@
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
-import { useParams, useSearchParams } from "next/navigation";
-import SockJS from "sockjs-client";
-import Stomp from "stompjs";
-import "./index.css";
-import { getRandomImage, images } from "@/lib/images";
-import toast from "react-hot-toast";
-import { Edit } from "lucide-react";
-import { ImageForm } from "../_components/image-form";
+import ReactCountDown from "@/app/(protected)/quiz/_components/ReactCountDown";
+import Correct from "@/components/correct";
+import { QuestionOptions } from "@/components/QuestionOptions";
+import Wrong from "@/components/wrong";
+import { images } from "@/lib/images";
+import { convertQuestionToSlide } from "@/lib/utils";
 import {
   AdvancedChatMessage,
   MessageType,
-  Question,
   QuestionType,
   Receiver,
 } from "@/types";
-import { Circle, Triangle, Square, Diamond } from "lucide-react";
-import { Slide } from "@/app/(protected)/questionset/create/_components/slides.hook";
-import { OptionBar } from "@/app/(protected)/questionset/create/_components/Slide";
-import { cn, convertQuestionToSlide } from "@/lib/utils";
-import Correct from "@/components/correct";
-import Wrong from "@/components/wrong";
-import { QuestionOptions } from "@/components/QuestionOptions";
-import ReactCountDown from "@/app/(protected)/quiz/_components/ReactCountDown";
-const SHAPES = [Triangle, Diamond, Circle, Square];
-const COLORS = ["bg-red-600", "bg-blue-600", "bg-yellow-600", "bg-green-600"];
+import { Edit } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
+import { ImageForm } from "../_components/image-form";
+import "./index.css";
+
 enum ContentType {
   NOT_STARTED = "NOT_STARTED",
   QUESTION = "QUESTION",
@@ -45,6 +40,7 @@ const ChatRoom: React.FC = () => {
   );
   const [content, setContent] = useState<React.JSX.Element>();
   const gameCode = searchParams.get("quizId") || "";
+  const router = useRouter();
 
   console.log(gameCode);
   console.log(username);
@@ -129,7 +125,7 @@ const ChatRoom: React.FC = () => {
                           slide={convertQuestionToSlide(msg.question!)}
                           innerClassName={
                             msg.question!.questionType === QuestionType.QUIZ
-                              ? "!h-[45vh]"
+                              ? "!h-[40vh]"
                               : "!h-[90vh]"
                           }
                           submitAnswer={(ind: number) => {
@@ -183,6 +179,9 @@ const ChatRoom: React.FC = () => {
                     break;
                   case MessageType.LEADERBOARD:
                     break;
+                  case MessageType.END:
+                    toast.success("Quiz Ended");
+                    router.push("/");
                   default:
                     console.log("Unknown message type", msg);
                 }

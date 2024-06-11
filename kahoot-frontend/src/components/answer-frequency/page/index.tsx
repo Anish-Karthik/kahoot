@@ -47,7 +47,11 @@ const AnswerFrequencyPage = ({
         />
       </div>
       <div>
-        <QuestionOptionsFrequency questionType="QUIZ" slide={slide} />
+        <QuestionOptionsFrequency
+          questionType="QUIZ"
+          slide={slide}
+          displayCorrect={true}
+        />
       </div>
     </section>
   );

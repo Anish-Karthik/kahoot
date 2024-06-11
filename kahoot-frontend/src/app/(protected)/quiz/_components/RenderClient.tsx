@@ -60,6 +60,9 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
 
   useEffect(() => {
     // Establish the WebSocket connection
+    if (isStarted && stompClient && connected) {
+      return;
+    }
     const socket = new SockJS(
       `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"}/ws`
     );
@@ -79,6 +82,14 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
           JSON.stringify({ type: "GET" })
         );
         setStompClient(client);
+        if (!isStarted) {
+          client?.send(
+            `/app/chat/${gameCode}/start`,
+            {},
+            JSON.stringify({ type: MessageType.START })
+          );
+          setIsStarted(true);
+        }
       },
       (error) => {
         console.error("Error connecting:", error);
@@ -86,10 +97,15 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
     );
 
     return () => {
-      disconnect();
+      if (stompClient && connected) {
+        stompClient.disconnect(() => {
+          // toast.success("Disconnected successfully");
+          console.log("Disconnected");
+          // setConnected(false);
+        });
+      }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameCode]); // Reconnect if gameCode changes
+  }, [gameCode, isStarted]); // Reconnect if gameCode changes
 
   const disconnect = () => {
     if (stompClient && connected) {
@@ -267,6 +283,7 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
         <div className="fixed top-2 right-2 flex w-full justify-end gap-3">
           {currQuestion + 1 === questions.length ? (
             <Button
+              variant={"destructive"}
               onClick={() => {
                 stompClient?.send(
                   `/app/chat/${gameCode}/end`,
@@ -388,6 +405,7 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
   }
 
   if (!isStarted) {
+    return <>Starting...</>;
     return (
       <div className="w-full h-screen flex flex-col items-center justify-center">
         <div className="flex flex-col gap-3">
