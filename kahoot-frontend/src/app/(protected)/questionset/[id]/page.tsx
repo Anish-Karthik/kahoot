@@ -7,12 +7,13 @@ import { Slide } from "../create/_components/slides.hook";
 
 const page = async ({ params }: { params: { id: number } }) => {
   try {
-    const data: QuestionSet = (await api.get(`/questionset/${params.id}`)).data;
+    const data: QuestionSet = (await api.get(`/questionset/${params.id}`))
+      ?.data;
     console.log(data);
-    const slides: Slide[] = data.questions.map((question) =>
+    const slides: Slide[] = data?.questions.map((question) =>
       convertQuestionToSlide(question)
     );
-
+    // return <>ji</>;
     return <EditSlidesPage slides={slides} id={data.id} name={data.name} />;
   } catch (error) {
     console.log(error);

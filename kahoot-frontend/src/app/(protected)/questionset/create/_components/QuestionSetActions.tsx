@@ -37,6 +37,8 @@ const QuestionSetActions = ({ id }: { id?: number }) => {
           const isValid = validateAll();
           if (isValid) {
             try {
+              console.log(!id);
+              console.log(questionSet);
               const res = !id
                 ? await api.post("/questionset", questionSet)
                 : await api.put(`/questionset/${id}`, questionSet);

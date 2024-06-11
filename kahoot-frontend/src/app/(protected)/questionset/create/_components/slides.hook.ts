@@ -139,21 +139,27 @@ export const useSlides = create<SlidesState>((set, get) => ({
   removeSlide: (index) =>
     set((state) => {
       if (state.slides.length === 1) return state;
+      const currentSlideIndex = Math.min(
+        state.currentSlideIndex,
+        state.slides.length - 2
+      );
+      console.log(currentSlideIndex);
       return {
         slides: state.slides.filter((_, i) => i !== index),
-        currentSlideIndex: Math.min(
-          state.currentSlideIndex,
-          state.slides.length - 2
-        ),
+        currentSlideIndex,
+        currentSlide: state.slides[currentSlideIndex],
       };
     }),
   duplicateSlide: (index) =>
     set((state) => ({ slides: [...state.slides, state.slides[index]] })),
   setCurrentSlide: (index) =>
-    set((state) => ({
-      currentSlideIndex: index,
-      currentSlide: state.slides[index],
-    })),
+    set((state) => {
+      console.log(Math.min(state.slides.length - 1, index));
+      return {
+        currentSlideIndex: Math.min(state.slides.length - 1, index),
+        currentSlide: state.slides[Math.min(state.slides.length - 1, index)],
+      };
+    }),
   validateAllSlides: () =>
     get().slides.every((slide, i) =>
       get().currentSlideActions.isValidSlide(i)

@@ -206,10 +206,8 @@ const QuestionSetCard = ({ questionSet }: { questionSet: QuestionSet }) => {
                   const quiz: Quiz = {
                     id: -1,
                     code: generateRandomCode(6),
-                    questionSets: [
-                      questionSet,
-                    ],
-                  }
+                    questionSets: [questionSet],
+                  };
                   const res: Quiz = (await api.post(`/quiz`, quiz)).data;
                   console.log(res);
                   toast.success("Quiz created successfully");
