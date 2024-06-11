@@ -353,7 +353,7 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
                   onSuccess={() => {
                     renderAnswerFrequency();
                   }}
-                  timer={questions[currQuestion].timeLimit / 4}
+                  timer={questions[currQuestion].timeLimit}
                 />
                 s
               </h1>
@@ -377,7 +377,7 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
                 onSuccess={() => {
                   renderAnswerFrequency();
                 }}
-                timer={questions[currQuestion].timeLimit / 4}
+                timer={questions[currQuestion].timeLimit}
               />
               s
             </h1>

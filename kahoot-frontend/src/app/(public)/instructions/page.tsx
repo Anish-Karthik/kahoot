@@ -115,7 +115,7 @@ const ChatRoom: React.FC = () => {
                         JSON.stringify(answer)
                       );
                       // }
-                    }, (msg.question!.timeLimit / 4) * 1000);
+                    }, (msg.question!.timeLimit) * 1000);
                     setContent(
                       <div className="w-screen h-screen">
                         {/* <div className="w-full text-center py-4 mb-4 text-2xl text-white">
