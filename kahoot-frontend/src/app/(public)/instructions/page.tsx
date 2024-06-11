@@ -14,12 +14,12 @@ import {
   Triangle,
   Square,
   Diamond,
-  LucideProps,
-  Check,
 } from "lucide-react";
 import { Slide } from "@/app/(protected)/questionset/create/_components/slides.hook";
 import { OptionBar } from "@/app/(protected)/questionset/create/_components/Slide";
 import { cn, convertQuestionToSlide } from "@/lib/utils";
+import Correct from "@/components/correct";
+import Wrong from "@/components/wrong";
 const SHAPES = [Triangle, Diamond, Circle, Square];
 const COLORS = ["bg-red-600", "bg-blue-600", "bg-yellow-600", "bg-green-600"];
 enum ContentType {
@@ -51,7 +51,9 @@ const ChatRoom: React.FC = () => {
       console.log("Connecting to chat room...");
       if (username.trim() && gameCode) {
         toast.loading("Connecting to room...");
-        const socket = new SockJS(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"}/ws`);
+        const socket = new SockJS(
+          `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"}/ws`
+        );
         const client = Stomp.over(socket);
         client.connect(
           {},
@@ -79,18 +81,14 @@ const ChatRoom: React.FC = () => {
                     console.log(msg);
                     setContentType(ContentType.VERDICT);
                     setContent(
-                      <div className="flex flex-col gap-2 w-screen h-screen">
-                        <div className="player" key={username}>
-                          <div className="relative">
-                            <img src={imageUrl} alt={username} />
-                          </div>
-                          <p>{username}</p>
-                        </div>
-                        <h2>
-                          your score {msg.verdict!.score} answer is{" "}
-                          {msg.verdict!.correct ? "correct" : "incorrect"}
-                        </h2>
-                      </div>
+                      msg.verdict!.correct ? (
+                        <Correct
+                          answerStreak={true}
+                          score={msg.verdict!.score}
+                        />
+                      ) : (
+                        <Wrong isAnswered={msg.answerIndex !== -1} />
+                      )
                     );
                     break;
                   case MessageType.QUESTION:

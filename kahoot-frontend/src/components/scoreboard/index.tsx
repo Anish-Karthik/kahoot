@@ -1,7 +1,16 @@
 import React from "react";
 import "./index.css";
 import { cn } from "@/lib/utils";
-const Leaderboard = () => {
+const Leaderboard = ({
+  initialLeaderboardData,
+}: {
+  initialLeaderboardData?: {
+    position: number;
+    image: string;
+    username: string;
+    score: number;
+  }[];
+}) => {
   const leaderboardData = [
     {
       position: 2,

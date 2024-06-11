@@ -3,7 +3,7 @@ import React from "react";
 import ReactCountDown from "../../quiz/_components/ReactCountDown";
 
 const page = () => {
-  return <ReactCountDown />;
+  return <Leaderboard />;
 };
 
 export default page;

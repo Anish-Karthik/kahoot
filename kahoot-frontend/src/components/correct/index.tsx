@@ -3,7 +3,13 @@ import { FaCheck } from "react-icons/fa";
 
 import React from "react";
 
-const Correct = () => {
+const Correct = ({
+  score,
+  answerStreak = false,
+}: {
+  score: number;
+  answerStreak: boolean;
+}) => {
   return (
     <section className="section fixed z-50 inset-0">
       <div className="correct !mb-6 ">
@@ -14,12 +20,12 @@ const Correct = () => {
         <FaCheck />
       </div>
       <br />
-      <div className="streak items-center !mb-3">
+      {answerStreak && <div className="streak items-center !mb-3">
         <p className="!text-xl">Answer streak</p>
         <img src="/score/coin.png" alt="" />
-      </div>
+      </div>}
       <div className="points max-w-28 rounded-md !py-6">
-        <p>+435</p>
+        <p>+{score}</p>
       </div>
     </section>
   );
