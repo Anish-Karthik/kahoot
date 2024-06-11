@@ -8,7 +8,7 @@
   align-items: center;
   min-height: 100vh;
   overflow-y: auto;
-  background: rgb(70, 23, 143);
+  background: rgb(70, 23, 143) !important;
   background-size: 400% 400%;
   animation: gradientBG 15s ease infinite;
 }

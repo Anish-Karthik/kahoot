@@ -13,5 +13,7 @@ import lombok.Setter;
 @Builder
 public class Leaderboard {
   private String username;
+  private String imageUrl;
+  private int position;
   private int score;
 }

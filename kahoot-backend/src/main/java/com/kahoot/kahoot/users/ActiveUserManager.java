@@ -90,8 +90,19 @@ public class ActiveUserManager {
         for (LiveUser user : users.values()) {
             leaderboards.add(Leaderboard.builder()
                     .username(user.getUsername())
+                    .imageUrl(user.getImageUrl())
                     .score(user.getAnswers().stream().mapToInt(Answer::getScore).sum())
                     .build());
+        }
+        leaderboards.sort((a, b) -> b.getScore() - a.getScore());
+        for (int i = 0; i < leaderboards.size(); i++) {
+            leaderboards.get(i).setPosition(i + 1);
+        }
+//        swap 1st two elements
+        if (leaderboards.size() > 1) {
+            Leaderboard temp = leaderboards.get(0);
+            leaderboards.set(0, leaderboards.get(1));
+            leaderboards.set(1, temp);
         }
         return leaderboards;
     }

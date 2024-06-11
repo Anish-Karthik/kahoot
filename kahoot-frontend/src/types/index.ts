@@ -36,6 +36,8 @@ export type ChatMessage = {
 
 export type Leaderboard = {
   username: string;
+  imageUrl: string;
+  position: number;
   score: number;
 };
 

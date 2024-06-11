@@ -162,8 +162,7 @@ public class ChatController {
         System.out.println("Sending answer frequency");
         chatMessage.setType(MessageType.ANSWER_FREQUENCY);
         chatMessage.setReciever(Receiver.HOST);
-        // chatMessage.setAnswerFrequency(activeUserManager.getAnswerFrequency(roomNumber,
-        // chatMessage.getQuestionIndex()));
+        chatMessage.setAnswerFrequency(activeUserManager.getAnswerFrequency(roomNumber, chatMessage.getQuestionIndex()));
         return chatMessage;
     }
 
@@ -175,7 +174,7 @@ public class ChatController {
             @Payload AdvancedChatMessage chatMessage) {
         chatMessage.setType(MessageType.LEADERBOARD);
         chatMessage.setReciever(Receiver.HOST);
-        // chatMessage.setLeaderboard(activeUserManager.getLeaderboard(roomNumber));
+        chatMessage.setLeaderboard(activeUserManager.getLeaderboard(roomNumber));
         return chatMessage;
     }
 

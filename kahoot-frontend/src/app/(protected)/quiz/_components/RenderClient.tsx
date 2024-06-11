@@ -6,6 +6,7 @@ import {
   Leaderboard,
   MessageType,
   Question,
+  QuestionType,
   Receiver,
 } from "@/types";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -20,6 +21,7 @@ import {
 } from "../../questionset/create/_components/slides.hook";
 import { convertSlideToQuestion } from "@/lib/utils";
 import SimpleCounter from "./SimpleCounter";
+import Scoreboard from "@/components/scoreboard";
 
 // RenderClient
 // 1. timer -> 3 seconds delay and auto to next question to all clients in quiz
@@ -53,7 +55,9 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
 
   useEffect(() => {
     // Establish the WebSocket connection
-    const socket = new SockJS(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"}/ws`);
+    const socket = new SockJS(
+      `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"}/ws`
+    );
     const client = Stomp.over(socket);
     setStompClient(client);
     client.connect(
@@ -210,6 +214,24 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
   }
 
   if (showAnswerFrequency) {
+    console.log(currQuestion);
+    console.log(answerFrequency);
+    console.log(slidesState.currentSlide);
+    const currentQuestion = slidesState.currentSlide;
+
+    if (currentQuestion === undefined) {
+      return (
+        <div className="w-full h-full flex items-center justify-center">
+          Loading...
+        </div>
+      );
+    }
+
+    const question = convertSlideToQuestion(currentQuestion);
+    console.log(question);
+    if (question.questionType === QuestionType.TRUE_OR_FALSE) {
+      answerFrequency.length = 2;
+    }
     return (
       <div className="w-full h-full flex items-center justify-center">
         <div className="flex flex-col gap-3">
@@ -238,17 +260,8 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
   // LEADERBOARD
   if (showScoreBoard) {
     return (
-      <div className="w-full h-full flex items-center justify-center">
-        <div className="flex flex-col gap-3">
-          <h1>Leaderboard</h1>
-          <div className="flex flex-col gap-3">
-            {scoreboard.map((player) => (
-              <div key={player.username} className="flex justify-between">
-                <h1>{player.username}</h1>
-                <h1>{player.score}</h1>
-              </div>
-            ))}
-          </div>
+      <div className="w-full h-full relative">
+        <div className="fixed top-2 right-2 flex w-full justify-end gap-3">
           <Button
             onClick={() => {
               setShowScoreBoard(false);
@@ -258,6 +271,7 @@ const RenderClient = ({ questions }: { questions: Slide[] }) => {
             Next
           </Button>
         </div>
+        <Scoreboard leaderboardData={scoreboard} />
       </div>
     );
   }

@@ -1,85 +1,82 @@
 import React from "react";
 import "./index.css";
 import { cn } from "@/lib/utils";
-const Leaderboard = ({
-  initialLeaderboardData,
-}: {
-  initialLeaderboardData?: {
-    position: number;
-    image: string;
-    username: string;
-    score: number;
-  }[];
-}) => {
-  const leaderboardData = [
-    {
-      position: 2,
-      image: "https://cdn-icons-png.flaticon.com/512/714/714036.png",
-      username: "Divya",
-      score: 6794,
-    },
-    {
-      position: 1,
-      image: "https://cdn-icons-png.flaticon.com/512/1810/1810989.png",
-      username: "Karthik",
-      score: 6853,
-    },
-    {
-      position: 3,
-      image: "https://cdn-icons-png.flaticon.com/512/141/141836.png",
-      username: "Janani",
-      score: 6034,
-    },
-    {
-      position: 4,
-      image: "https://cdn-icons-png.flaticon.com/512/141/141793.png",
-      username: "Jakshi",
-      score: 5980,
-    },
-    {
-      position: 5,
-      image: "https://cdn-icons-png.freepik.com/512/141/141782.png",
-      username: "Tamizh",
-      score: 5978,
-    },
-    {
-      position: 6,
-      image: "https://cdn-icons-png.flaticon.com/512/141/141783.png",
-      username: "Gopinath",
-      score: 5845,
-    },
-    {
-      position: 7,
-      image: "https://cdn-icons-png.flaticon.com/512/424/424791.png",
-      username: "Mathan",
-      score: 5799,
-    },
-    {
-      position: 4 + 4,
-      image: "https://cdn-icons-png.flaticon.com/512/141/141793.png",
-      username: "Jakshi",
-      score: 5980,
-    },
-    {
-      position: 5 + 4,
-      image: "https://cdn-icons-png.freepik.com/512/141/141782.png",
-      username: "Tamizh",
-      score: 5978,
-    },
-    {
-      position: 6 + 4,
-      image: "https://cdn-icons-png.flaticon.com/512/141/141783.png",
-      username: "Gopinath",
-      score: 5845,
-    },
-    {
-      position: 7 + 4,
-      image: "https://cdn-icons-png.flaticon.com/512/424/424791.png",
-      username: "Mathan",
-      score: 5799,
-    },
-  ];
+import { Leaderboard } from "@/types";
 
+const demoLeaderboardData = [
+  {
+    position: 2,
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/714/714036.png",
+    username: "Divya",
+    score: 6794,
+  },
+  {
+    position: 1,
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/1810/1810989.png",
+    username: "Karthik",
+    score: 6853,
+  },
+  {
+    position: 3,
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/141/141836.png",
+    username: "Janani",
+    score: 6034,
+  },
+  {
+    position: 4,
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/141/141793.png",
+    username: "Jakshi",
+    score: 5980,
+  },
+  {
+    position: 5,
+    imageUrl: "https://cdn-icons-png.freepik.com/512/141/141782.png",
+    username: "Tamizh",
+    score: 5978,
+  },
+  {
+    position: 6,
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/141/141783.png",
+    username: "Gopinath",
+    score: 5845,
+  },
+  {
+    position: 7,
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/424/424791.png",
+    username: "Mathan",
+    score: 5799,
+  },
+  {
+    position: 4 + 4,
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/141/141793.png",
+    username: "Jakshi",
+    score: 5980,
+  },
+  {
+    position: 5 + 4,
+    imageUrl: "https://cdn-icons-png.freepik.com/512/141/141782.png",
+    username: "Tamizh",
+    score: 5978,
+  },
+  {
+    position: 6 + 4,
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/141/141783.png",
+    username: "Gopinath",
+    score: 5845,
+  },
+  {
+    position: 7 + 4,
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/424/424791.png",
+    username: "Mathan",
+    score: 5799,
+  },
+];
+
+const Scoreboard = ({
+  leaderboardData = demoLeaderboardData,
+}: {
+  leaderboardData?: Leaderboard[];
+}) => {
   return (
     <section className="section overflow-y-auto">
       <div className="center">
@@ -101,7 +98,7 @@ const Leaderboard = ({
               <div
                 className="pic"
                 style={{
-                  backgroundImage: `url('${item.image}')`,
+                  backgroundImage: `url('${item.imageUrl}')`,
                 }}
               ></div>
               <div className="name">{item.username}</div>
@@ -116,7 +113,7 @@ const Leaderboard = ({
               <div
                 className="pic"
                 style={{
-                  backgroundImage: `url('${item.image}')`,
+                  backgroundImage: `url('${item.imageUrl}')`,
                 }}
               ></div>
               <div className="name">{item.username}</div>
@@ -129,4 +126,4 @@ const Leaderboard = ({
   );
 };
 
-export default Leaderboard;
+export default Scoreboard;

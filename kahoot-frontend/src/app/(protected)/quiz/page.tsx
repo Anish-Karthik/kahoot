@@ -21,7 +21,7 @@ const page = async ({
   const slides: Slide[] = questions.map(convertQuestionToSlide);
   console.log(questions);
   return (
-    <div className="h-full w-full">
+    <div className="h-screen w-full !bg-[#46178F] !text-white">
       <RenderClient questions={slides} />
     </div>
   );
